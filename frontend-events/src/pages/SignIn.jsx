@@ -10,7 +10,7 @@ import {
   Checkbox,
   Link,
 } from "@mui/material";
-import { useForm } from "react-hook-form";
+import { useFormik } from 'formik'
 export default function SignIn() {
   const styles = {
     container: {
@@ -21,16 +21,15 @@ export default function SignIn() {
     },
   };
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
+    },
+  });
 
   return (
     <Container sx={styles.container} component="main" maxWidth="xs">
@@ -38,7 +37,7 @@ export default function SignIn() {
         <Typography variant="h3" component="h1">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={formik.handleSubmi} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             fullWidth
@@ -46,6 +45,8 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             required
+            onChange={formik.handleChange}
+            value={formik.values.email}
           />
           <TextField
             margin="normal"
@@ -55,6 +56,8 @@ export default function SignIn() {
             name="password"
             autoComplete="current-password"
             required
+            onChange={formik.handleChange}
+            value={formik.values.password}
           />
           <Button
             sx={{ mt: 3, mb: 2 }}
